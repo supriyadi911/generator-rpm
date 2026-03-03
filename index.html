@@ -475,8 +475,9 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
             };
 
             try {
-                // Gunakan API key dari environment (jika ada) atau dari input user
-                const activeApiKey = apiKey || document.getElementById('user_api_key').value.trim();
+                // Gunakan API key dari input user, atau fallback ke environment
+                const userApiKey = document.getElementById('user_api_key').value.trim();
+                const activeApiKey = userApiKey || apiKey;
                 
                 if (!activeApiKey) {
                     alert("Harap masukkan Gemini API Key di Pengaturan API untuk menggunakan generator ini.");
@@ -485,7 +486,10 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
                     return;
                 }
 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeApiKey}`;
+                // Gunakan model publik (1.5-flash) jika memakai API Key pengguna, agar stabil di GitHub
+                const modelName = userApiKey ? "gemini-1.5-flash" : "gemini-2.5-flash-preview-09-2025";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeApiKey}`;
+                
                 const result = await fetchWithRetry(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -495,13 +499,20 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
                 const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (!textResponse) throw new Error("Invalid response format from Gemini");
                 
-                const aiData = JSON.parse(textResponse);
+                // Bersihkan respon dari markdown code blocks sebelum di-parse
+                let cleanText = textResponse;
+                cleanText = cleanText.replace(/^```json\s*/i, '');
+                cleanText = cleanText.replace(/^```\s*/i, '');
+                cleanText = cleanText.replace(/\s*```$/i, '');
+                cleanText = cleanText.trim();
+                
+                const aiData = JSON.parse(cleanText);
                 
                 renderDocument(data, aiData);
 
             } catch (error) {
                 console.error("API Error:", error);
-                alert("Maaf, terjadi kesalahan saat menghubungi AI. Silakan coba klik Generate lagi. Pastikan koneksi internet stabil.");
+                alert(`Maaf, terjadi kesalahan: ${error.message}. Pastikan koneksi internet stabil dan API Key valid.`);
             } finally {
                 document.getElementById('loadingOverlay').classList.add('hidden');
                 document.getElementById('generateBtn').disabled = false;
