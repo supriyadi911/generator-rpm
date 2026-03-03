@@ -75,7 +75,8 @@
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <i class="fas fa-layer-group"></i> Generator RPM
             </h1>
-            <p class="text-blue-100 text-sm mt-1">Perencanaan Pembelajaran Mendalam AI</p>
+            <p class="text-blue-100 text-sm mt-1">Generator Rencana Pembelajaran Mendalam (Deep Learning) menggunakan AI</p>
+            <p class="text-blue-200 text-xs mt-1 italic">Created by : Supriyadi, S. Pd. Gr</p>
         </div>
 
         <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
@@ -87,8 +88,13 @@
                     <p class="text-xs text-yellow-700 mb-3">Untuk menjalankan aplikasi ini di GitHub Pages, Anda memerlukan API Key dari Google AI Studio.</p>
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
-                            <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
+                                <button type="button" onclick="showApiTutorial()" class="text-xs text-blue-600 hover:text-blue-800 underline flex items-center gap-1">
+                                    <i class="fas fa-question-circle"></i> Cara mendapatkan API Key
+                                </button>
+                            </div>
+                            <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Model AI</label>
@@ -278,8 +284,46 @@
         </div>
     </div>
 
+    <!-- Modal Tutorial API Key -->
+    <div id="apiTutorialModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+            <div class="p-4 bg-blue-600 text-white flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-key"></i> Cara Mendapatkan API Key</h3>
+                <button onclick="closeApiTutorial()" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 text-gray-700 text-sm">
+                <ol class="list-decimal pl-5 space-y-3">
+                    <li>Buka halaman <strong><a href="https://aistudio.google.com/" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Google AI Studio</a></strong>.</li>
+                    <li>Login menggunakan akun Google Anda (Gmail).</li>
+                    <li>Di panel menu sebelah kiri, klik menu <strong>"Get API key"</strong>.</li>
+                    <li>Klik tombol biru bertuliskan <strong>"Create API key"</strong>.</li>
+                    <li>Pilih project yang sudah ada atau klik tombol <strong>"Create API key in new project"</strong>.</li>
+                    <li>Salin (copy) kode unik panjang yang muncul di layar.</li>
+                    <li>Kembali ke aplikasi ini dan tempel (paste) kode tersebut di kolom <strong>Gemini API Key</strong>.</li>
+                </ol>
+                <div class="bg-yellow-50 border border-yellow-200 p-3 rounded text-xs text-yellow-800 mt-5">
+                    <strong><i class="fas fa-shield-alt"></i> Keamanan:</strong> API Key Anda sangat aman karena hanya disimpan di memori *browser* komputer/perangkat Anda sendiri secara lokal, tidak dikirim ke *server* manapun selain Google.
+                </div>
+            </div>
+            <div class="p-4 border-t bg-gray-50 flex justify-end">
+                <button onclick="closeApiTutorial()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow text-sm font-medium transition">Mengerti & Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const apiKey = ""; // API key will be injected by the environment
+
+        // Fungsi untuk Modal API Tutorial
+        function showApiTutorial() {
+            document.getElementById('apiTutorialModal').classList.remove('hidden');
+        }
+
+        function closeApiTutorial() {
+            document.getElementById('apiTutorialModal').classList.add('hidden');
+        }
 
         // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
