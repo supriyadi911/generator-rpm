@@ -85,9 +85,20 @@
                 <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                     <h3 class="text-lg font-semibold text-yellow-800 mb-2 border-b border-yellow-200 pb-2">Pengaturan API</h3>
                     <p class="text-xs text-yellow-700 mb-3">Untuk menjalankan aplikasi ini di GitHub Pages, Anda memerlukan API Key dari Google AI Studio.</p>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
-                        <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
+                            <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Model AI</label>
+                            <select id="user_model" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Rekomendasi)</option>
+                                <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview</option>
+                                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -280,6 +291,11 @@
                 const apiKeyInput = document.getElementById('user_api_key');
                 if(apiKeyInput) apiKeyInput.value = savedKey;
             }
+            const savedModel = localStorage.getItem('gemini_model');
+            if (savedModel) {
+                const modelInput = document.getElementById('user_model');
+                if(modelInput) modelInput.value = savedModel;
+            }
         });
 
         // Mapping Jenjang to Kelas
@@ -352,9 +368,11 @@
             
             // Save API Key to local storage
             const userApiKey = document.getElementById('user_api_key').value.trim();
+            const userModel = document.getElementById('user_model').value;
             if (userApiKey) {
                 localStorage.setItem('gemini_api_key', userApiKey);
             }
+            localStorage.setItem('gemini_model', userModel);
 
             // Gather Dimensions
             const dimensiEls = document.querySelectorAll('.dimensi-cb:checked');
@@ -486,8 +504,8 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
                     return;
                 }
 
-                // Gunakan model publik (1.5-flash) jika memakai API Key pengguna, agar stabil di GitHub
-                const modelName = userApiKey ? "gemini-1.5-flash" : "gemini-2.5-flash-preview-09-2025";
+                // Gunakan model dari dropdown jika memakai API Key pengguna
+                const modelName = userApiKey ? document.getElementById('user_model').value : "gemini-2.5-flash-preview-09-2025";
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeApiKey}`;
                 
                 const result = await fetchWithRetry(url, {
