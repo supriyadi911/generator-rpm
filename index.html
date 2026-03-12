@@ -50,239 +50,234 @@
             width: 50%;
             padding: 0;
         }
-        
-        /* Custom scrollbar untuk area form */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Left Panel: Form Input -->
-    <div class="w-1/2 bg-white shadow-xl flex flex-col h-full z-10 border-r border-gray-200">
-        <div class="p-6 bg-blue-600 text-white shadow-md">
+    <!-- Header Full Width -->
+    <header class="p-6 bg-blue-600 text-white shadow-md z-10 relative">
+        <div class="container mx-auto">
             <h1 class="text-2xl font-bold flex items-center gap-2">
                 <i class="fas fa-layer-group"></i> Generator RPM
             </h1>
             <p class="text-blue-100 text-sm mt-1">Generator Rencana Pembelajaran Mendalam (Deep Learning) menggunakan AI</p>
             <p class="text-blue-200 text-xs mt-1 italic">Created by : Supriyadi, S. Pd. Gr</p>
         </div>
+    </header>
 
-        <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-8 flex-1 flex flex-col">
+        
+        <!-- Form Area (Top/Horizontal Layout) -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
             <form id="rpmForm" class="space-y-6">
                 
-                <!-- Pengaturan API (Untuk GitHub Pages) -->
-                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                    <h3 class="text-lg font-semibold text-yellow-800 mb-2 border-b border-yellow-200 pb-2">Pengaturan API</h3>
-                    <p class="text-xs text-yellow-700 mb-3">Untuk menjalankan aplikasi ini di GitHub Pages, Anda memerlukan API Key dari Google AI Studio.</p>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between items-center mb-1">
-                                <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
-                                <button type="button" onclick="showApiTutorial()" class="text-xs text-blue-600 hover:text-blue-800 underline flex items-center gap-1">
-                                    <i class="fas fa-question-circle"></i> Cara mendapatkan API Key
-                                </button>
+                <!-- Grid Container untuk Input Horizontal -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+                    
+                    <!-- 1. Pengaturan API -->
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 shadow-sm h-full">
+                        <h3 class="text-lg font-semibold text-yellow-800 mb-2 border-b border-yellow-200 pb-2">Pengaturan API</h3>
+                        <p class="text-xs text-yellow-700 mb-3">Untuk menjalankan aplikasi ini di GitHub Pages, Anda memerlukan API Key dari Google AI Studio.</p>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-sm font-medium text-gray-700">Gemini API Key *</label>
+                                    <button type="button" onclick="showApiTutorial()" class="text-xs text-blue-600 hover:text-blue-800 underline flex items-center gap-1">
+                                        <i class="fas fa-question-circle"></i> Cara mendapatkan API Key
+                                    </button>
+                                </div>
+                                <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 bg-white">
                             </div>
-                            <input type="password" id="user_api_key" placeholder="Masukkan API Key Anda di sini..." class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Model AI</label>
-                            <select id="user_model" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Rekomendasi)</option>
-                                <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview</option>
-                                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
-                                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Identitas Sekolah & Guru -->
-                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Data Identitas</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Satuan Pendidikan *</label>
-                            <input type="text" id="satdik" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Mata Pelajaran *</label>
-                            <input type="text" id="mapel" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Kepala Sekolah *</label>
-                            <input type="text" id="kepsek" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">NIP Kepala Sekolah *</label>
-                            <input type="text" id="nip_kepsek" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Nama Guru *</label>
-                            <input type="text" id="guru" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">NIP Guru *</label>
-                            <input type="text" id="nip_guru" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Model AI</label>
+                                <select id="user_model" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                    <option value="gemini-2.5-flash">Gemini 2.5 Flash (Rekomendasi)</option>
+                                    <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview</option>
+                                    <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                                    <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Detail Kelas & Pertemuan -->
-                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Detail Kelas & Waktu</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Jenjang Pendidikan *</label>
-                            <select id="jenjang" required onchange="updateKelasOptions()" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Pilih Jenjang</option>
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                            </select>
+                    <!-- 2. Data Identitas -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm h-full">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Data Identitas</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Nama Satuan Pendidikan *</label>
+                                <input type="text" id="satdik" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Mata Pelajaran *</label>
+                                <input type="text" id="mapel" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nama Kepala Sekolah *</label>
+                                <input type="text" id="kepsek" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">NIP Kepsek *</label>
+                                <input type="text" id="nip_kepsek" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nama Guru *</label>
+                                <input type="text" id="guru" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">NIP Guru *</label>
+                                <input type="text" id="nip_guru" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
-                        <div class="flex gap-2">
-                            <div class="w-1/2">
+                    </div>
+
+                    <!-- 3. Detail Kelas & Waktu -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm h-full">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Detail Kelas & Waktu</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Jenjang Pendidikan *</label>
+                                <select id="jenjang" required onchange="updateKelasOptions()" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="">Pilih Jenjang</option>
+                                    <option value="SD">SD</option>
+                                    <option value="SMP">SMP</option>
+                                    <option value="SMA">SMA</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">Kelas *</label>
                                 <select id="kelas" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
                                     <option value="">Pilih Jenjang Dulu</option>
                                 </select>
                             </div>
-                            <div class="w-1/2">
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">Semester *</label>
                                 <select id="semester" required class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
                                     <option value="Ganjil">Ganjil</option>
                                     <option value="Genap">Genap</option>
                                 </select>
                             </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Jumlah Pertemuan *</label>
-                            <input type="number" id="jml_pertemuan" required min="1" max="10" value="1" onchange="generatePedagogiInputs()" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Durasi Per Pertemuan *</label>
-                            <input type="text" id="durasi" required placeholder="Contoh: 2 x 45 menit" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Konten Pembelajaran -->
-                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Konten Pembelajaran</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Capaian Pembelajaran (CP) *</label>
-                            <textarea id="cp" required rows="3" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tujuan Pembelajaran *</label>
-                            <textarea id="tp" required rows="3" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Materi Pelajaran *</label>
-                            <textarea id="materi" required rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Jml Pertemuan *</label>
+                                <input type="number" id="jml_pertemuan" required min="1" max="10" value="1" onchange="generatePedagogiInputs()" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Durasi (Per Pertemuan) *</label>
+                                <input type="text" id="durasi" required placeholder="Contoh: 2 x 45 menit" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Praktik Pedagogis Dinamis -->
-                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Praktik Pedagogis (Per Pertemuan)</h3>
-                    <div id="pedagogi_container" class="space-y-3">
-                        <!-- Select inputs will be generated here -->
+                    <!-- 4. Konten Pembelajaran -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm h-full md:col-span-2 lg:col-span-1">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Konten Pembelajaran</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Capaian Pembelajaran (CP) *</label>
+                                <textarea id="cp" required rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Tujuan Pembelajaran *</label>
+                                <textarea id="tp" required rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Materi Pelajaran *</label>
+                                <textarea id="materi" required rows="2" class="mt-1 w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Dimensi Lulusan -->
-                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Dimensi Lulusan (Pilih yang relevan)</h3>
-                    <div class="grid grid-cols-2 gap-2" id="dimensi_container">
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Keimanan & Ketakwaan" class="dimensi-cb rounded text-blue-600"> Keimanan & Ketakwaan</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Kewargaan" class="dimensi-cb rounded text-blue-600"> Kewargaan</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Penalaran Kritis" class="dimensi-cb rounded text-blue-600"> Penalaran Kritis</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Kreativitas" class="dimensi-cb rounded text-blue-600"> Kreativitas</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Kolaborasi" class="dimensi-cb rounded text-blue-600"> Kolaborasi</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Kemandirian" class="dimensi-cb rounded text-blue-600"> Kemandirian</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Kesehatan" class="dimensi-cb rounded text-blue-600"> Kesehatan</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" value="Komunikasi" class="dimensi-cb rounded text-blue-600"> Komunikasi</label>
+                    <!-- 5. Praktik Pedagogis Dinamis -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm h-full">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Praktik Pedagogis (Per Pertemuan)</h3>
+                        <div id="pedagogi_container" class="space-y-3">
+                            <!-- Select inputs will be generated here -->
+                        </div>
                     </div>
+
+                    <!-- 6. Dimensi Lulusan -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm h-full">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Dimensi Lulusan (Pilih yang relevan)</h3>
+                        <div class="grid grid-cols-2 gap-3" id="dimensi_container">
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Keimanan & Ketakwaan" class="dimensi-cb rounded text-blue-600"> Keimanan & Ketakwaan</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Kewargaan" class="dimensi-cb rounded text-blue-600"> Kewargaan</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Penalaran Kritis" class="dimensi-cb rounded text-blue-600"> Penalaran Kritis</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Kreativitas" class="dimensi-cb rounded text-blue-600"> Kreativitas</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Kolaborasi" class="dimensi-cb rounded text-blue-600"> Kolaborasi</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Kemandirian" class="dimensi-cb rounded text-blue-600"> Kemandirian</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Kesehatan" class="dimensi-cb rounded text-blue-600"> Kesehatan</label>
+                            <label class="flex items-center gap-2 text-sm"><input type="checkbox" value="Komunikasi" class="dimensi-cb rounded text-blue-600"> Komunikasi</label>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="pt-4 pb-8">
-                    <button type="submit" id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-200 flex justify-center items-center gap-2">
+                <!-- Submit Button -->
+                <div class="pt-6 mt-6 border-t border-gray-200">
+                    <button type="submit" id="generateBtn" class="w-full md:w-auto md:px-12 mx-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition duration-200 flex justify-center items-center gap-2 text-lg">
                         <i class="fas fa-magic"></i> Generate RPM dengan AI
                     </button>
                 </div>
             </form>
         </div>
-    </div>
 
-    <!-- Right Panel: Output & Preview -->
-    <div class="w-1/2 bg-gray-100 flex flex-col h-full">
-        <div class="p-4 bg-white border-b border-gray-200 flex justify-between items-center shadow-sm z-10">
-            <h2 class="text-lg font-semibold text-gray-800">Preview Dokumen</h2>
-            <button id="copyBtn" onclick="copyToGoogleDocs()" class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition duration-200 flex items-center gap-2">
-                <i class="fas fa-copy"></i> Salin & Buka Google Dokumen
-            </button>
+        <!-- Output / Preview Area (Bottom Layout) -->
+        <div class="bg-white rounded-xl shadow-xl border border-gray-300 flex flex-col relative overflow-hidden flex-1 min-h-[500px]">
+            <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center z-10">
+                <h2 class="text-lg font-semibold text-gray-800"><i class="fas fa-file-alt text-blue-600 mr-2"></i> Preview Dokumen RPM</h2>
+                <button id="copyBtn" onclick="copyToGoogleDocs()" class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition duration-200 flex items-center gap-2">
+                    <i class="fas fa-copy"></i> Salin & Buka Google Dokumen
+                </button>
+            </div>
+
+            <div class="flex-1 p-8 relative" id="previewContainer">
+                <!-- Loading Overlay -->
+                <div id="loadingOverlay" class="hidden absolute inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center z-20">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mb-4"></div>
+                    <p class="text-gray-700 font-medium text-lg">AI sedang menyusun rencana pembelajaran...</p>
+                    <p class="text-gray-500 mt-2">Mohon tunggu beberapa saat.</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-400 py-20">
+                    <i class="fas fa-file-signature text-6xl mb-4 text-gray-300"></i>
+                    <p>Isi formulir di atas dan klik <strong>Generate</strong> untuk melihat hasil.</p>
+                </div>
+
+                <!-- Output Document Area -->
+                <div id="documentOutput" class="hidden bg-white p-2 md:p-10 mx-auto max-w-5xl doc-content">
+                    <h1 style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 20px;">
+                        RENCANA PEMBELAJARAN MENDALAM (RPM)
+                    </h1>
+                    
+                    <table class="doc-table" id="outputTable">
+                        <!-- Content will be injected here -->
+                    </table>
+
+                    <table class="signature-table" id="signatureTable">
+                        <tr>
+                            <td>
+                                Mengetahui,<br>
+                                Kepala Sekolah<br>
+                                <br><br><br><br>
+                                <strong id="out_kepsek">[Nama Kepsek]</strong><br>
+                                NIP. <span id="out_nip_kepsek">[NIP Kepsek]</span>
+                            </td>
+                            <td>
+                                <span id="out_tempat_tanggal">......., .................... 20..</span><br>
+                                Guru Mata Pelajaran<br>
+                                <br><br><br><br>
+                                <strong id="out_guru">[Nama Guru]</strong><br>
+                                NIP. <span id="out_nip_guru">[NIP Guru]</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-8 relative" id="previewContainer">
-            <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="hidden absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-20">
-                <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mb-4"></div>
-                <p class="text-gray-700 font-medium">AI sedang menyusun rencana pembelajaran...</p>
-                <p class="text-gray-500 text-sm mt-2">Mohon tunggu beberapa saat.</p>
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState" class="h-full flex flex-col items-center justify-center text-gray-400">
-                <i class="fas fa-file-signature text-6xl mb-4 text-gray-300"></i>
-                <p>Isi formulir di samping dan klik Generate untuk melihat hasil.</p>
-            </div>
-
-            <!-- Output Document Area -->
-            <div id="documentOutput" class="hidden bg-white p-10 shadow-lg doc-content" style="min-height: 100%;">
-                <h1 style="text-align: center; font-weight: bold; font-size: 14pt; margin-bottom: 20px;">
-                    RENCANA PEMBELAJARAN MENDALAM (RPM)
-                </h1>
-                
-                <table class="doc-table" id="outputTable">
-                    <!-- Content will be injected here -->
-                </table>
-
-                <table class="signature-table" id="signatureTable">
-                    <tr>
-                        <td>
-                            Mengetahui,<br>
-                            Kepala Sekolah<br>
-                            <br><br><br><br>
-                            <strong id="out_kepsek">[Nama Kepsek]</strong><br>
-                            NIP. <span id="out_nip_kepsek">[NIP Kepsek]</span>
-                        </td>
-                        <td>
-                            <span id="out_tempat_tanggal">......., .................... 20..</span><br>
-                            Guru Mata Pelajaran<br>
-                            <br><br><br><br>
-                            <strong id="out_guru">[Nama Guru]</strong><br>
-                            NIP. <span id="out_nip_guru">[NIP Guru]</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <!-- Modal Tutorial API Key -->
     <div id="apiTutorialModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -389,7 +384,7 @@
                 label.textContent = `Pertemuan ${i}:`;
                 
                 const select = document.createElement('select');
-                select.className = "pedagogi-select flex-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500";
+                select.className = "pedagogi-select flex-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 bg-white";
                 select.required = true;
                 select.dataset.pertemuan = i;
                 
@@ -478,6 +473,9 @@
             document.getElementById('loadingOverlay').classList.remove('hidden');
             document.getElementById('generateBtn').disabled = true;
 
+            // Scroll down to preview area smoothly
+            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
             const systemPrompt = `Anda adalah seorang ahli kurikulum dan pendidikan di Indonesia. Tugas Anda adalah menyusun komponen perencanaan pembelajaran mendalam berdasarkan input pengguna. 
 Output harus dalam format JSON yang valid. Gunakan tata bahasa Indonesia yang baik, formal, dan rapi sesuai ejaan. Jangan gunakan markdown dalam nilai JSON. Cukup teks biasa.
 Untuk bagian "mengaplikasi", jabarkan langkah-langkah kegiatan inti secara spesifik berdasarkan Praktik Pedagogis yang dipilih untuk setiap pertemuannya.`;
@@ -545,6 +543,7 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
                     alert("Harap masukkan Gemini API Key di Pengaturan API untuk menggunakan generator ini.");
                     document.getElementById('loadingOverlay').classList.add('hidden');
                     document.getElementById('generateBtn').disabled = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
 
@@ -575,6 +574,7 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
             } catch (error) {
                 console.error("API Error:", error);
                 alert(`Maaf, terjadi kesalahan: ${error.message}. Pastikan koneksi internet stabil dan API Key valid.`);
+                document.getElementById('emptyState').classList.remove('hidden');
             } finally {
                 document.getElementById('loadingOverlay').classList.add('hidden');
                 document.getElementById('generateBtn').disabled = false;
@@ -743,7 +743,7 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
                 const data = [new ClipboardItem({ 'text/html': blob })];
                 navigator.clipboard.write(data).then(() => {
                     alert("Konten berhasil disalin! Tab baru Google Dokumen akan terbuka. Silakan tekan Ctrl+V (atau Cmd+V) di sana.");
-                    window.open('https://docs.google.com/document/create', '_blank');
+                    window.open('[https://docs.google.com/document/create](https://docs.google.com/document/create)', '_blank');
                 }).catch(err => {
                     fallbackCopy(content);
                 });
@@ -782,7 +782,7 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
             try {
                 document.execCommand('copy');
                 alert("Konten berhasil disalin! Tab baru Google Dokumen akan terbuka. Silakan tekan Ctrl+V (atau Cmd+V) di sana.");
-                window.open('https://docs.google.com/document/create', '_blank');
+                window.open('[https://docs.google.com/document/create](https://docs.google.com/document/create)', '_blank');
             } catch (err) {
                 alert("Gagal menyalin secara otomatis. Silakan blok tabel secara manual lalu copy.");
             }
@@ -793,3 +793,5 @@ Generate objek JSON dengan struktur berikut (isi teks komprehensif, logis, dan e
     </script>
 </body>
 </html>
+
+
